@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart, removeFromCart } from "../../state/slices/cartSice";
 import { Modal, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const CartView = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -9,6 +10,7 @@ const CartView = () => {
   const [showModal, setShowModal] = useState(false);
   const [purchaseSuccessful, setPurchaseSuccessful] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Utiliza useNavigate en lugar de useHistory
 
   const handleRemove = (itemId) => {
     dispatch(removeFromCart(itemId));
@@ -22,12 +24,11 @@ const CartView = () => {
   };
 
   const handleConfirmarCompra = () => {
-    // Cerrar el modal después de un tiempo
     setPurchaseSuccessful(true);
     setTimeout(() => {
       setPurchaseSuccessful(false);
       setShowModal(false);
-      window.location.href = "/";
+      navigate("/home/products"); // Utiliza navigate para cambiar la ruta
       dispatch(clearCart());
     }, 3000);
   };
@@ -39,6 +40,7 @@ const CartView = () => {
   const handleClose = () => {
     setShowModal(false);
   };
+
   return (
     <div className="container">
       {isAuthenticated ? (
@@ -69,9 +71,11 @@ const CartView = () => {
               ))
             )}
           </div>
-          <button className="btn btn-primary" onClick={handlePagar}>
-            Pagar
-          </button>
+          {cartItems.length > 0 && (
+            <button className="btn btn-primary" onClick={handlePagar}>
+              Terminar mi compra
+            </button>
+          )}
           <Modal show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Confirmar Compra</Modal.Title>

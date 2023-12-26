@@ -66,9 +66,9 @@ const refreshAccessToken = async (refreshToken) => {
   }
 };
 
-const createUser = async (name, email, password, avatar) => {
+const createUser = async ({name, email, password, avatar}) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/users`, {
+    const response = await fetch(`${API_BASE_URL}/users/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

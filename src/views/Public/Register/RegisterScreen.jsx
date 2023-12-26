@@ -1,34 +1,12 @@
-// RegisterScreen.js
-import React from "react";
+import React,{useState} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { createUser } from "../../../services/auth.service"; 
+import { createUser } from "../../../services/auth.service";
 
 const initialValues = {
   name: "",
   email: "",
   password: "",
   confirmPassword: "",
-};
-
-const onSubmit = async (values, setSubmitting) => {
-  try {
-    // Crear un nuevo usuario
-    const newUser = await createUser(
-      values.name,
-      values.email,
-      values.password,
-      "https://picsum.photos/800"
-    );
-
-
-    // Restablecer el estado del formulario
-    setSubmitting(false);
-  } catch (error) {
-    console.error("Error creating user:", error);
-
-    // Restablecer el estado del formulario
-    setSubmitting(false);
-  }
 };
 
 const validate = (values) => {
@@ -60,17 +38,41 @@ const validate = (values) => {
 };
 
 const RegisterScreen = () => {
+
+  const [alert, setAlert] = useState(null);
+
+  const onSubmit = async (values, { setSubmitting }) => {
+    try {
+      const newUser = await createUser({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        avatar: "https://picsum.photos/800",
+      });
+
+      console.log(newUser);
+      setAlert({ type: "success", message: "Usuario creado exitosamente." });
+
+    } catch (error) {
+      console.error("Error al crear usuario:", error);
+      setAlert({ type: "error", message: "Fallo el registro. Inténtalo de nuevo." });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div>
       <h2>RegisterScreen</h2>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validate={validate}
-      >
+      {alert && (
+        <div style={{ color: alert.type === "error" ? "red" : "green" }}>
+          {alert.message}
+        </div>
+      )}
+      <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
         {({ isSubmitting }) => (
           <Form>
-            <div>
+               <div>
               <label htmlFor="name">Name:</label>
               <Field type="text" id="name" name="name" />
               <ErrorMessage name="name" component="div" />
@@ -97,6 +99,7 @@ const RegisterScreen = () => {
               />
               <ErrorMessage name="confirmPassword" component="div" />
             </div>
+
 
             <button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Registrando..." : "Registrarme"}

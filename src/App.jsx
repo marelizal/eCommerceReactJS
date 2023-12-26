@@ -1,57 +1,49 @@
+import React from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import PrivateRoute from "./components/PrivateRoute";
-import routes from "./config/routes";
-import { lazy } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { useSelector } from "react-redux";
 import Layout from "./components/Layout";
+import LoginScreen from "./views/Public/Login/LoginScreen";
+import HomeScreen from "./views/Public/Home/HomeScreen";
+import Register from "./views/Public/Register/RegisterScreen";
+import CategoriesScreen from "./views/Private/Categories/CategoriesScreen";
+import ProductsScreen from "./views/Private/Products/ProductScreen";
+import ProductDetailView from "./views/Private/ProductDetail";
+import CartView from "./views/Private/CartScreen";
+import NotFound from "./views/NotFound/NotFound"; 
 
-const Home = lazy(() => import("./views/Private/Home/HomeScreen"));
-const Categories = lazy(() =>
-  import("./views/Private/Categories/CategoriesScreen")
-);
-const Product = lazy(() => import("./views/Private/Products/ProductScreen"));
-const Login = lazy(() => import("./views/Public/Login/LoginScreen"));
-const Register = lazy(() => import("./views/Public/Register/RegisterScreen"));
-const NotFound = lazy(() => import("./views/NotFound/NotFound"));
+function App() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-const App = () => {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          {/* Ruta inicial */}
-          <Route path="/" element={<Navigate to={routes.PRIVATE} />} />
+          {/* Ruta protegida que requiere autenticación */}
+          <Route path="/home/*" element={<ProtectedRoute redirectTo="/login" />}>
+            <Route index element={<HomeScreen />} />
+            <Route path="categories" element={<CategoriesScreen />} />
+            <Route path="products" element={<ProductsScreen />} />
+            <Route path="cart" element={<CartView />} />
+            <Route path="products/:id" element={<ProductDetailView />} />
+          </Route>
 
-          {/* Rutas privadas */}
-          <Route
-            path="private/*"
-            element={
-              <PrivateRoute>
-                <Route
-                  index
-                  element={
-                    <Layout>
-                      <Route path={routes.HOME} element={<Home />} />
-                      <Route
-                        path={routes.CATEGORIES}
-                        element={<Categories />}
-                      />
-                      <Route path={routes.PRODUCTS} element={<Product />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Layout>
-                  }
-                />
-              </PrivateRoute>
-            }
-          />
+          {/* Ruta de inicio que se muestra si hay autenticación */}
+          {isAuthenticated ? (
+            <Route path="/" element={<Navigate to="/home" />} />
+          ) : (
+            <Route path="/" element={<LoginScreen />} />
+          )}
 
-          {/* Rutas públicas */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<Register />} />
+
+          {/* Ruta para Not Found */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>
   );
-};
+}
 
 export default App;

@@ -97,7 +97,7 @@ const LoginScreen = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Contraseña:</label>
           <Field
             type="password"
             id="password"

@@ -119,7 +119,7 @@ const RegisterScreen = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <label htmlFor="confirmPassword">Confirmar contraseña:</label>
               <Field
                type="password"
                id="password"

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { clearCart, removeFromCart } from "../../state/slices/cartSice";
 import { Modal, Button } from "react-bootstrap";
-import {  useNavigation } from "react-router-dom"; // Importa useHistory desde react-router-dom
 
 const CartView = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -23,15 +22,14 @@ const CartView = () => {
   };
 
   const handleConfirmarCompra = () => {
-   
     // Cerrar el modal después de un tiempo
     setPurchaseSuccessful(true);
     setTimeout(() => {
       setPurchaseSuccessful(false);
       setShowModal(false);
-      window.location.href = '/';
+      window.location.href = "/";
       dispatch(clearCart());
-    }, 3000); 
+    }, 3000);
   };
 
   const handlePagar = () => {

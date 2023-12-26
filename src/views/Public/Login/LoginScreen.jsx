@@ -70,7 +70,7 @@ const LoginScreen = () => {
       <small>
         {" "}
         <small className="fw-bold">Usuario: </small>john@mail.com <br />{" "}
-        <small className="fw-bold">Contseña: </small> changeme
+        <small className="fw-bold">Contraseña: </small> changeme
       </small>
     </div>
     <Formik

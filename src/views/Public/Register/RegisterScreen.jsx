@@ -63,7 +63,7 @@ const RegisterScreen = () => {
 
   return (
     <div>
-      <h2>RegisterScreen</h2>
+      <h2>Registrarse</h2>
       {alert && (
         <div style={{ color: alert.type === "error" ? "red" : "green" }}>
           {alert.message}
@@ -72,36 +72,69 @@ const RegisterScreen = () => {
       <Formik initialValues={initialValues} onSubmit={onSubmit} validate={validate}>
         {({ isSubmitting }) => (
           <Form>
-               <div>
-              <label htmlFor="name">Name:</label>
-              <Field type="text" id="name" name="name" />
-              <ErrorMessage name="name" component="div" />
+            <div className="form-group">
+              <label htmlFor="name">Nombre:</label>
+              <Field 
+               type="text" 
+               id="name" 
+               name="name" 
+               className="form-control"
+              />
+              <ErrorMessage
+               name="email"
+               component="div"
+               className="text-danger"
+              />
             </div>
 
-            <div>
+            <div className="form-group">
               <label htmlFor="email">Email:</label>
-              <Field type="email" id="email" name="email" />
-              <ErrorMessage name="email" component="div" />
+              <Field
+               type="email"
+               id="email"
+               name="email"
+               className="form-control"
+              />
+              <ErrorMessage
+               name="email"
+               component="div"
+               className="text-danger"
+              />
             </div>
 
-            <div>
-              <label htmlFor="password">Password:</label>
-              <Field type="password" id="password" name="password" />
-              <ErrorMessage name="password" component="div" />
+
+            <div className="form-group">
+              <label htmlFor="password">Contraseña:</label>
+              <Field
+               type="password"
+               id="password"
+               name="password"
+               className="form-control"
+              />
+              <ErrorMessage
+               name="password"
+               component="div"
+               className="text-danger"
+              />
             </div>
 
             <div>
               <label htmlFor="confirmPassword">Confirm Password:</label>
               <Field
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
+               type="password"
+               id="password"
+               name="password"
+               className="form-control"
               />
-              <ErrorMessage name="confirmPassword" component="div" />
+              <ErrorMessage
+               name="password"
+               component="div"
+               className="text-danger"
+              />
             </div>
 
 
-            <button type="submit" disabled={isSubmitting}>
+            <button type="submit" className="btn btn-primary mt-3 w-100" disabled={isSubmitting}>
               {isSubmitting ? "Registrando..." : "Registrarme"}
             </button>
           </Form>

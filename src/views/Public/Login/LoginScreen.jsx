@@ -64,33 +64,59 @@ const LoginScreen = () => {
 
   return (
     <div>
-      <h2>LoginScreen</h2>
-      <small>usertest : john@mail.com |  password_test: changeme</small>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values, { setSubmitting }) =>
-          onSubmit(values, setSubmitting)
-        }
-        validate={validate}
-      >
-        <Form>
-          <div>
-            <label htmlFor="email">Email:</label>
-            <Field type="email" id="email" name="email" />
-            <ErrorMessage name="email" component="div" />
-          </div>
+    <h2>Acceder a la plataforma</h2>
 
-          <div>
-            <label htmlFor="password">Password:</label>
-            <Field type="password" id="password" name="password" />
-            <ErrorMessage name="password" component="div" />
-          </div>
-
-          <button type="submit">Acceder</button>
-          
-        </Form>
-      </Formik>
+    <div class="alert alert-warning mt-3" role="alert">
+      <small>
+        {" "}
+        <small className="fw-bold">Usuario: </small>john@mail.com <br />{" "}
+        <small className="fw-bold">Contseña: </small> changeme
+      </small>
     </div>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values, { setSubmitting }) =>
+        onSubmit(values, setSubmitting)
+      }
+      validate={validate}
+    >
+      <Form>
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <Field
+            type="email"
+            id="email"
+            name="email"
+            className="form-control"
+          />
+          <ErrorMessage
+            name="email"
+            component="div"
+            className="text-danger"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <Field
+            type="password"
+            id="password"
+            name="password"
+            className="form-control"
+          />
+          <ErrorMessage
+            name="password"
+            component="div"
+            className="text-danger"
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary mt-3 w-100">
+          Acceder
+        </button>
+      </Form>
+    </Formik>
+  </div>
   );
 };
 
